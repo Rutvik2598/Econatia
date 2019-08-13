@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.HomeFragment">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bar"
+        android:background="?android:attr/windowBackground">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            android:background="?android:attr/windowBackground">
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="-23dp"
+                android:layout_marginLeft="-50dp"
+                android:src="@drawable/logo" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:id="@+id/add_post"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_new"
+                android:layout_toStartOf="@+id/notification"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="35dp"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:id="@+id/notification"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="30dp"
+                android:src="@drawable/ic_notification"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:id="@+id/request_pickup"
+                android:layout_height="20dp"
+                android:src="@drawable/truck"
+                android:layout_toStartOf="@+id/add_post"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="35dp"/>
+
+
+        </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bar"
+        android:id="@+id/recycler_view12"/>
+
+
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_circular"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>
