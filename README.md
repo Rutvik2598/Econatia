@@ -14,3 +14,15 @@ The platform proposed will aim at creating awareness among society as well as re
 Early on support required for this platform will be provided by local NGOs and individual on their own basis.
 As the community increases the platform will become a self growing and self promoting.
 
+# Interface
+
+![unnamed](https://user-images.githubusercontent.com/44207349/62920989-f6996b00-bdc4-11e9-87a7-19e4fd4abd99.png) ![unnamed1](https://user-images.githubusercontent.com/44207349/62921110-5db71f80-bdc5-11e9-8713-9fee8f959c4e.png) ![unnamed2](https://user-images.githubusercontent.com/44207349/62921121-67408780-bdc5-11e9-91e1-20f012354f62.png)
+![unnamed3](https://user-images.githubusercontent.com/44207349/62921125-690a4b00-bdc5-11e9-9294-427df0f363e8.png)
+
+# Technologies Used
+
+Firebase authentication for login and signup is used.Firebase database is also used for storing images and videos.
+
+# Play Store Link
+
+https://play.google.com/store/apps/details?id=com.company.econatia&hl=en_IN
