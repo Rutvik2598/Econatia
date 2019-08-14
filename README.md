@@ -1,5 +1,8 @@
 # Econatia
 
+![logo](https://user-images.githubusercontent.com/44207349/63032151-e1126700-bed2-11e9-9064-aee16ddc4db5.png)
+
+
 Econatia will be a platform which will bring together group of people forming
 A community which contributes towards the environment . econatia will act as catalyst for events beneficial to the society.
 econatia will make sure that people who actively contribute to the well being of the society do not go unnoticed.’
@@ -15,35 +18,33 @@ Early on support required for this platform will be provided by local NGOs and i
 As the community increases the platform will become a self growing and self promoting.
 
 # App Functions
-> **Follow**
+> **Follow:**
 User can follow any other user to be able to see his posts.
 
-> **Like and Comment**
+> **Like and Comment:**
 User can like and comment on posts.
 
-> **Save**
+> **Save:**
 User can save the posts.
 
-> **Recycle Pickup request**
+> **Recycle Pickup request:**
 User can request pickup for recycle, where user is needed to put his address, city and phone number.Then respective person can
 visit and pickup the material which can be recycled for money.
 
-> **Econs**
+> **Econs:**
 Econ is currency for Econatia.User can earn econs by posting informative posts or planting trees or arranging drives for tree plantation.User can redeem these econs in the store for items.
 
-> **Edit Profile**
+> **Edit Profile:**
 User can edit his profile picture, user name or his profile bio.
 
-> **Forgot your password**
+> **Forgot your password:**
 If user forgets his account password, there will be link sent for resetting the password on registered email id.
 
 # Interface
 
 ![unnamed](https://user-images.githubusercontent.com/44207349/62920989-f6996b00-bdc4-11e9-87a7-19e4fd4abd99.png) 
 
-![unnamed1](https://user-images.githubusercontent.com/44207349/62921110-5db71f80-bdc5-11e9-8713-9fee8f959c4e.png) 
-
-![unnamed2](https://user-images.githubusercontent.com/44207349/62921121-67408780-bdc5-11e9-91e1-20f012354f62.png)
+![unnamed1](https://user-images.githubusercontent.com/44207349/62921110-5db71f80-bdc5-11e9-8713-9fee8f959c4e.png) ![unnamed2](https://user-images.githubusercontent.com/44207349/62921121-67408780-bdc5-11e9-91e1-20f012354f62.png)
 
 ![unnamed3](https://user-images.githubusercontent.com/44207349/62921125-690a4b00-bdc5-11e9-9294-427df0f363e8.png)
 
