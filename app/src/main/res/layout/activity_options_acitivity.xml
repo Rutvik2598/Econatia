@@ -7,56 +7,148 @@
     android:layout_height="match_parent"
     tools:context=".OptionsAcitivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"/>
+        android:id="@+id/toolbar2"
+        app:title="Profile Settings"
+        />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorAccent"/>
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/settings"
-        android:text="Settings"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_margin="8dp"
-        android:textSize="18sp"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/logoutIv"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_logout"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/logout"
+            android:layout_toEndOf="@+id/logoutIv"
+            android:text="Log Out"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_margin="8dp"
+            android:textSize="18sp"/>
+
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorAccent"/>
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/logout"
-        android:text="Log Out"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_margin="8dp"
-        android:textSize="18sp"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/editProfile"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_edit"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_profile"
+            android:text="Edit your profile"
+            android:layout_toEndOf="@+id/editProfile"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_margin="8dp"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorAccent"/>
-    <TextView
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_profile"
-        android:text="Edit your profile"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_margin="8dp"
-        android:textSize="18sp"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/aboutUs"
+            android:layout_margin="8dp"
+            android:src="@drawable/app_icon"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/about_us"
+            android:text="About Us"
+            android:layout_toRightOf="@+id/aboutUs"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_margin="8dp"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorAccent"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/privacyPolicy"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_privacy"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/privacy_policy"
+            android:text="Privacy Policy"
+            android:layout_toEndOf="@+id/privacyPolicy"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_margin="8dp"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#e8ede9"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/logo"/>
+
+    </LinearLayout>
 
 
 </LinearLayout>

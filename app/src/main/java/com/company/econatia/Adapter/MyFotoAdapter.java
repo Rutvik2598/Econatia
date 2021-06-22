@@ -2,9 +2,9 @@ package com.company.econatia.Adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +39,10 @@ public class MyFotoAdapter extends RecyclerView.Adapter<MyFotoAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final Post post= mPosts.get(i);
-        Glide.with(context).load(post.getPostimage()).into(viewHolder.post_image);
+        if(post.getType().equals("image") || post.getType().equals("video"))
+            Glide.with(context).load(post.getPostimage()).into(viewHolder.post_image);
+        else
+            Glide.with(context).load(R.drawable.ic_text_only).into(viewHolder.post_image);
 
         viewHolder.post_image.setOnClickListener(new View.OnClickListener() {
             @Override

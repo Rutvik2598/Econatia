@@ -1,23 +1,30 @@
 package com.company.econatia;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.company.econatia.Fragment.ChatListFragment;
 import com.company.econatia.Fragment.HomeFragment;
 import com.company.econatia.Fragment.ProfileFragment;
 import com.company.econatia.Fragment.RewardsFragment;
 import com.company.econatia.Fragment.SearchFragment;
+import com.company.econatia.Notifications.Token;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     Fragment selectedFragment = null;
+    String mUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNavigationView.setItemIconTintList(null);
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mUID = firebaseUser.getUid();
+
 
         Bundle intent = getIntent().getExtras();
         if(intent!=null){
@@ -43,6 +53,24 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
         }
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sp = getSharedPreferences("SP-USER", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("Current_USERID", mUID);
+        editor.apply();
+    }
+
+    public void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token mToken = new Token(token);
+        reference.child(mUID).setValue(mToken);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -64,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new RewardsFragment();
                             break;
 
+                        case R.id.nav_chat:
+                            selectedFragment = new ChatListFragment();
+                            break;
+
 
                         case R.id.nav_profile:
                             SharedPreferences.Editor editor = getSharedPreferences("PREFS" , MODE_PRIVATE).edit();
@@ -75,8 +107,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if(selectedFragment != null){
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container ,
-                                selectedFragment).commit();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+                                                     R.anim.enter_right_to_left, R.anim.exit_right_to_left)
+                                .replace(R.id.fragment_container , selectedFragment)
+                                .addToBackStack(null)
+                                .commit();
                     }
 
                     return true;

@@ -2,10 +2,9 @@ package com.company.econatia.Adapter;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.company.econatia.Fragment.PostDetailragment;
-import com.company.econatia.Fragment.ProfileFragment;
 import com.company.econatia.Model.Notification;
 import com.company.econatia.Model.Post;
 import com.company.econatia.Model.User;
@@ -60,7 +57,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }else{
             viewHolder.post_image.setVisibility(View.GONE);
         }
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        /*viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(notification.isIspost()){
@@ -79,7 +76,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                 }
             }
-        });
+        });*/
 
     }
 

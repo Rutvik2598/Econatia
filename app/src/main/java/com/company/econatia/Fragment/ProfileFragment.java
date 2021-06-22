@@ -4,22 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.company.econatia.Adapter.MyFotoAdapter;
+import com.company.econatia.ChatActivity;
 import com.company.econatia.EditProfileActivity;
 import com.company.econatia.FollowersActivity;
 import com.company.econatia.Model.Post;
@@ -44,8 +48,8 @@ public class ProfileFragment extends Fragment {
 
     ImageView image_profile,options;
     int econs;
-    TextView posts,followers,following,fullname,bio,username;
-    Button edit_profile;
+    TextView posts,followers,following,fullname,bio,username,no_posts;
+    Button edit_profile, send_message, edit_profile2;
 
     private List<String> mySaves;
 
@@ -53,6 +57,7 @@ public class ProfileFragment extends Fragment {
     MyFotoAdapter myFotoAdapter_save;
     List<Post>postList_saves;
 
+    LinearLayout followersLayout, followingLayout;
 
     RecyclerView recyclerView;
     MyFotoAdapter myFotoAdapter;
@@ -83,7 +88,12 @@ public class ProfileFragment extends Fragment {
         bio = view.findViewById(R.id.bio);
         username = view.findViewById(R.id.username);
         edit_profile = view.findViewById(R.id.edit_profile);
-        my_fotos = view.findViewById(R.id.my_fotos);
+        no_posts = view.findViewById(R.id.no_posts);
+        send_message = view.findViewById(R.id.send_message);
+        edit_profile2 = view.findViewById(R.id.edit_profile2);
+        followersLayout = view.findViewById(R.id.followersLayout);
+        followingLayout = view.findViewById(R.id.followingLayout);
+        //my_fotos = view.findViewById(R.id.my_fotos);
 
         recyclerView = view.findViewById(R.id.recycler_view_post);
         recyclerView.setHasFixedSize(true);
@@ -103,10 +113,31 @@ public class ProfileFragment extends Fragment {
 
 
         if(profileid.equals(firebaseUser.getUid())){
-            edit_profile.setText("Edit Profile");
+            edit_profile2.setVisibility(View.VISIBLE);
+            edit_profile.setVisibility(View.INVISIBLE);
+            send_message.setVisibility(View.INVISIBLE);
         }else{
             checkFollow();
         }
+
+        send_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext() , ChatActivity.class);
+                intent.putExtra("hisUid", profileid);
+                ContextCompat.startForegroundService(getContext() , intent);
+                startActivity(intent);
+            }
+        });
+
+        edit_profile2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext() , EditProfileActivity.class);
+                ContextCompat.startForegroundService(getContext() , intent);
+                startActivity(intent);
+            }
+        });
 
         edit_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,17 +175,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        my_fotos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView_save.setVisibility(View.GONE);
-
-            }
-        });
-
-        followers.setOnClickListener(new View.OnClickListener() {
+        followersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), FollowersActivity.class);
@@ -165,7 +187,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        following.setOnClickListener(new View.OnClickListener() {
+        followingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), FollowersActivity.class);
@@ -276,7 +298,7 @@ public class ProfileFragment extends Fragment {
 
     private void getNrPosts(){
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Rewards").child(firebaseUser.getUid());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Rewards").child(profileid);
         reference.addListenerForSingleValueEvent(new ValueEventListener()  {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -308,6 +330,10 @@ public class ProfileFragment extends Fragment {
                     }
                 }
                 Collections.reverse(postList);
+                if(postList.isEmpty()){
+                    no_posts.setVisibility(View.VISIBLE);
+                    no_posts.setText("No posts yet!");
+                }
                 myFotoAdapter.notifyDataSetChanged();
             }
 

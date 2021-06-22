@@ -3,11 +3,13 @@ package com.company.econatia;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -43,6 +45,7 @@ public class PostVideoActivity extends AppCompatActivity {
 
     StorageTask uploadTask;
     StorageReference storageReference;
+    FirebaseAuth auth;
 
     ImageView close ;
     int econs;
@@ -66,6 +69,7 @@ public class PostVideoActivity extends AppCompatActivity {
         description = findViewById(R.id.description);
 
         storageReference = FirebaseStorage.getInstance().getReference("posts");
+        auth = FirebaseAuth.getInstance();
 
         Intent intent = new Intent();
         intent.setType("video/*");
@@ -148,6 +152,25 @@ public class PostVideoActivity extends AppCompatActivity {
 
                         reference.child(postid).setValue(hashMap);
 
+                        FirebaseUser firebaseUser = auth.getCurrentUser();
+                        Toast.makeText(getApplicationContext(),"You received 1 Econ",Toast.LENGTH_SHORT).show();
+                        final DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("Rewards").child(firebaseUser.getUid());
+                        reference2.addListenerForSingleValueEvent(new ValueEventListener()  {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Rewards rewards = dataSnapshot.getValue(Rewards.class);
+                                econs = rewards.getEcons();
+
+                                Rewards rewards1 = new Rewards(econs + 1);
+                                reference2.setValue(rewards1);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
                         progressDialog.dismiss();
 
                         Intent intent = new Intent(PostVideoActivity.this , MainActivity.class);
@@ -178,7 +201,36 @@ public class PostVideoActivity extends AppCompatActivity {
         if(requestCode == PICK_VIDEO_REQUEST && resultCode == RESULT_OK  && data != null){
 
             videoUri = data.getData();
-            video_added.setVideoURI(videoUri);
+            /*String[] filePathColumn = { MediaStore.Video.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(videoUri,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();*/
+
+            try {
+                if (videoUri != null) {
+
+                    MediaPlayer mp = MediaPlayer.create(this, videoUri);
+                    int duration = mp.getDuration();
+                    mp.release();
+
+                    if((duration/1000) > 30){
+                        Toast.makeText(PostVideoActivity.this , "Please upload video of duration less than 30 seconds" , Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(PostVideoActivity.this , PostVideoActivity.class);
+                        ContextCompat.startForegroundService(PostVideoActivity.this , intent);
+                        startActivity(intent);
+                    }else{
+                        video_added.setVideoURI(videoUri);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
 
         }
     }

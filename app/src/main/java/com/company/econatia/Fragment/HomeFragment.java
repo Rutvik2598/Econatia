@@ -2,24 +2,28 @@ package com.company.econatia.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 
 import com.company.econatia.Adapter.PostAdapter;
 import com.company.econatia.Model.Post;
+import com.company.econatia.Model.User;
 import com.company.econatia.NotificationActivity;
 import com.company.econatia.PostSelectActivity;
 import com.company.econatia.R;
-import com.company.econatia.Request_Pickup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,16 +36,17 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+    private static final String SAVED_LAYOUT_MANAGER = "layout_manager";
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
-    private List<Post> postLists;
+    private ArrayList<Post> postLists;
     private ImageView notification;
     private ImageView add_post;
     private ImageView request_pickup;
-
-    private RecyclerView recyclerView_story;
-    /*private StoryAdapter storyAdapter;
-    private List<Story> storyList;*/
+    private TextView pls_follow, no_posts;
+    private Button click_follow;
+    Fragment selectedFragment = null;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private List<String> followingList;
 
@@ -51,9 +56,26 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
+        //setRetainInstance(true);
         view =  inflater.inflate(R.layout.fragment_home, container, false);
 
         notification = view.findViewById(R.id.notification);
+        pls_follow = view.findViewById(R.id.pls_follow);
+        click_follow = view.findViewById(R.id.click_follow);
+        no_posts = view.findViewById(R.id.no_posts);
+        //swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
+
+        if(savedInstanceState != null){
+
+        }
+
+        /*swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                checkFollowing();
+            }
+        });*/
 
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +97,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        request_pickup=view.findViewById(R.id.request_pickup);
+        /*request_pickup=view.findViewById(R.id.request_pickup);
 
         request_pickup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +106,7 @@ public class HomeFragment extends Fragment {
                 ContextCompat.startForegroundService(getContext() , intent);
                 startActivity(intent);
             }
-        });
+        });*/
 
 
         recyclerView = view.findViewById(R.id.recycler_view12);
@@ -94,17 +116,8 @@ public class HomeFragment extends Fragment {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         postLists = new ArrayList<>();
-        postAdapter = new PostAdapter(getContext() , postLists);
+        postAdapter = new PostAdapter(getContext() , (List<Post>) postLists);
         recyclerView.setAdapter(postAdapter);
-
-
-        /*recyclerView_story = view.findViewById(R.id.recycler_view_story1);
-        recyclerView_story.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext() , LinearLayoutManager.HORIZONTAL , false);
-        recyclerView_story.setLayoutManager(linearLayoutManager1);
-        storyList = new ArrayList<>();
-        storyAdapter = new StoryAdapter(getContext() , storyList);
-        recyclerView_story.setAdapter(storyAdapter);*/
 
         progressBar = view.findViewById(R.id.progress_circular);
 
@@ -112,6 +125,7 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
 
     private void checkFollowing(){
 
@@ -128,9 +142,38 @@ public class HomeFragment extends Fragment {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     followingList.add(snapshot.getKey());
                 }
+                if(followingList.isEmpty()){
+                    pls_follow.setVisibility(View.VISIBLE);
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(getContext() == null){
+                                return;
+                            }
 
+                            User user = dataSnapshot.getValue(User.class);
+                            pls_follow.setText("Hi "+user.getFullname()+", Please follow some pages to see posts.");
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                    click_follow.setVisibility(View.VISIBLE);
+                    no_posts.setVisibility(View.VISIBLE);
+                    click_follow.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            selectedFragment = new SearchFragment();
+                            getFragmentManager().beginTransaction().replace(R.id.fragment_container ,
+                                    selectedFragment).commit();
+                        }
+                    });
+                }
                 readPosts();
-               // readStory();
             }
 
             @Override
@@ -144,11 +187,12 @@ public class HomeFragment extends Fragment {
     private void readPosts(){
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
-
+        //swipeRefreshLayout.setRefreshing(true);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postLists.clear();
+                //swipeRefreshLayout.setRefreshing(false);
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Post post = snapshot.getValue(Post.class);
                     for(String id : followingList){
@@ -164,43 +208,11 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                //swipeRefreshLayout.setRefreshing(false);
             }
         });
 
     }
-
-    /*private void readStory(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long timecurrent = System.currentTimeMillis();
-                //storyList.clear();
-                storyList.add(new Story("" , 0 , 0 , "" , FirebaseAuth.getInstance().getCurrentUser().getUid()));
-                for(String id : followingList){
-                    int countStory = 0;
-                    Story story = null;
-                    for(DataSnapshot snapshot : dataSnapshot.child(id).getChildren()){
-                        story = snapshot.getValue(Story.class);
-                        if(timecurrent > story.getTimeStart() && timecurrent < story.getTimeOut()){
-                            countStory++;
-                        }
-                    }
-                    if(countStory > 0){
-                        storyList.add(story);
-                    }
-                }
-                storyAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-*/
 }
 
 

@@ -1,25 +1,23 @@
 package com.company.econatia;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class OptionsAcitivity extends AppCompatActivity {
 
-    TextView logout , settings ,edit_profile;
+    TextView logout, edit_profile, about_us;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +25,14 @@ public class OptionsAcitivity extends AppCompatActivity {
         setContentView(R.layout.activity_options_acitivity);
 
         logout = findViewById(R.id.logout);
-        settings = findViewById(R.id.settings);
         edit_profile=findViewById(R.id.edit_profile);
+        about_us = findViewById(R.id.about_us);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Options");
+        getSupportActionBar().setTitle("Profile Settings");
+        getSupportActionBar().setLogo(R.drawable.ic_profile);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +57,17 @@ public class OptionsAcitivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(OptionsAcitivity.this , EditProfileActivity.class);
                 ContextCompat.startForegroundService(OptionsAcitivity.this , intent);
+                startActivity(intent);
+            }
+        });
+
+        about_us.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("http://www.econatia.tech"));
                 startActivity(intent);
             }
         });

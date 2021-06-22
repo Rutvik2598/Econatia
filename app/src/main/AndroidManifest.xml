@@ -15,12 +15,15 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".NewChatActivity"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".PostTextActivity" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5719688149111472~1558005042"/>
+            android:value="ca-app-pub-5719688149111472~1558005042" />
 
-
-        <activity android:name=".Activity_Ads"></activity>
+        <activity android:name=".Activity_Ads" />
         <activity android:name=".DeleteAccountActivity" />
         <activity android:name=".PasswordActivity" />
         <activity android:name=".Request_Pickup" />
@@ -32,7 +35,9 @@
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".CommentsActivity" />
         <activity android:name=".PostActivity" />
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
@@ -47,7 +52,7 @@
         </activity>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -55,6 +60,23 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <service
+            android:name=".Notifications.FirebaseService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_SERVICE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Notifications.FirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

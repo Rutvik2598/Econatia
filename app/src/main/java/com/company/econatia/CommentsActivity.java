@@ -1,16 +1,14 @@
 package com.company.econatia;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -123,7 +121,7 @@ public class CommentsActivity extends AppCompatActivity {
         hashMap.put("postid", postid);
         hashMap.put("ispost", true);
 
-        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+        /*NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setSmallIcon(R.drawable.ic_notification)
             .setLargeIcon(BitmapFactory.decodeResource(getResources() , R.drawable.ic_heart))
@@ -131,7 +129,7 @@ public class CommentsActivity extends AppCompatActivity {
             .setContentText("Commented:" + addcomment.getText().toString());
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1 , notificationBuilder.build());
+        notificationManager.notify(1 , notificationBuilder.build());*/
 
         reference.push().setValue(hashMap);
     }

@@ -1,10 +1,10 @@
 package com.company.econatia;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.company.econatia.Adapter.NotificationAdapter;
 import com.company.econatia.Model.Notification;
@@ -39,11 +39,11 @@ public class NotificationActivity extends AppCompatActivity {
         notificationAdapter=new NotificationAdapter(this, notificationList);
         recyclerView.setAdapter(notificationAdapter);
 
-        readNorification();
+        readNotification();
 
     }
 
-    private void readNorification() {
+    private void readNotification() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(firebaseUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {

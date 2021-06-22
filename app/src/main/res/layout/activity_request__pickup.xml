@@ -5,9 +5,23 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="10dp"
+    android:padding="5dp"
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Have extra recyclable waste at home???"
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share your information our people will come and pick it up for you"
+        android:textSize="12dp"
+        android:textColor="@color/colorPrimary"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -16,7 +30,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:text="Request a Pickup"
+        android:text="Select a date"
         android:textColor="@color/colorPrimary"/>
 
     <CalendarView

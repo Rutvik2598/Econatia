@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -55,6 +55,8 @@ public class PostActivity extends AppCompatActivity {
     TextView post;
     EditText description;
 
+    FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,7 @@ public class PostActivity extends AppCompatActivity {
         description = findViewById(R.id.description);
 
         storageReference = FirebaseStorage.getInstance().getReference("posts");
+        auth = FirebaseAuth.getInstance();
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +112,7 @@ public class PostActivity extends AppCompatActivity {
             try {
                 Bitmap bmp = (Bitmap) MediaStore.Images.Media.getBitmap(getContentResolver() , imageUri);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.JPEG, 25, baos);
+                bmp.compress(Bitmap.CompressFormat.JPEG, 50, baos);
                 byte[] data = baos.toByteArray();
                 UploadTask uploadTask = filereference.putBytes(data);
                 //uploadTask = filereference.putFile(imageUri);
@@ -146,6 +149,25 @@ public class PostActivity extends AppCompatActivity {
                             hashMap.put("date", date);
 
                             reference.child(postid).setValue(hashMap);
+
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            Toast.makeText(getApplicationContext(),"You received 1 Econ",Toast.LENGTH_SHORT).show();
+                            final DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("Rewards").child(firebaseUser.getUid());
+                            reference2.addListenerForSingleValueEvent(new ValueEventListener()  {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Rewards rewards = dataSnapshot.getValue(Rewards.class);
+                                    econs = rewards.getEcons();
+
+                                    Rewards rewards1 = new Rewards(econs + 1);
+                                    reference2.setValue(rewards1);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
 
                             progressDialog.dismiss();
 

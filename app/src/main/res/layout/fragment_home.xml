@@ -3,15 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFF"
     tools:context=".Fragment.HomeFragment">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bar"
         android:background="?android:attr/windowBackground">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/toolbar"
@@ -49,31 +50,56 @@
                 android:layout_marginRight="30dp"
                 android:src="@drawable/ic_notification"/>
 
-            <ImageView
-                android:layout_width="20dp"
-                android:id="@+id/request_pickup"
-                android:layout_height="20dp"
-                android:src="@drawable/truck"
-                android:layout_toStartOf="@+id/add_post"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="35dp"/>
 
 
         </RelativeLayout>
 
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
 
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar"
+        android:textSize="18dp"
+        android:id="@+id/pls_follow"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/click_follow"
+        android:layout_below="@+id/pls_follow"
+        android:text="Click here to follow some pages"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorPrimary"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:background="@drawable/button_background"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/click_follow"
+        android:text="No Posts..."
+        android:textSize="28dp"
+        android:id="@+id/no_posts"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_marginTop="50dp"/>
 
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/bar"
         android:id="@+id/recycler_view12"/>
-
 
 
     <ProgressBar

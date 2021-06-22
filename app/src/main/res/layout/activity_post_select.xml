@@ -12,6 +12,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Text Only"
+        android:id="@+id/text_select"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/button_background"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Image"
         android:id="@+id/image_select"
         android:layout_marginTop="15dp"
@@ -21,7 +30,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Video"
+        android:text="Video (Max duration 30 seconds)"
         android:id="@+id/video_select"
         android:layout_marginTop="15dp"
         android:textColor="@color/colorPrimary"

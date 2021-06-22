@@ -2,9 +2,9 @@ package com.company.econatia;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -103,7 +103,8 @@ public class LoginActivity extends AppCompatActivity {
                                     });
                                 }
                                 else{
-                                    Toast.makeText(LoginActivity.this , "Authentication failed" , Toast.LENGTH_SHORT).show();
+                                    pd.dismiss();
+                                    Toast.makeText(LoginActivity.this , "Authentication failed, passsword or username wrong!" , Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

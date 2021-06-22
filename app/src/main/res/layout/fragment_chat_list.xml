@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragment.ChatListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/toolbar1"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="22sp"
+                android:text="Chats"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="18sp"
+                android:text="New chat"
+                android:layout_toLeftOf="@+id/newChat"
+                android:textColor="@color/white"/>
+
+
+            <ImageView
+                android:layout_width="30dp"
+                android:id="@+id/newChat"
+                android:layout_height="30dp"
+                android:src="@drawable/new_chat"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="10dp"/>
+
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/row_chatlist"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+</RelativeLayout>

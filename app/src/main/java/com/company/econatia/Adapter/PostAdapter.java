@@ -7,15 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,10 +34,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.company.econatia.BuildConfig;
 import com.company.econatia.CommentsActivity;
 import com.company.econatia.FollowersActivity;
-import com.company.econatia.Fragment.PostDetailragment;
 import com.company.econatia.Fragment.ProfileFragment;
-import com.company.econatia.Model.Notification;
 import com.company.econatia.Model.Post;
+import com.company.econatia.Model.Rewards;
 import com.company.econatia.Model.User;
 import com.company.econatia.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,7 +99,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                     .apply(new RequestOptions().override(1000 , 1000))
                     .into(viewHolder.post_image);
 
-        }else{
+        }
+        else if(post.getType().equals("text")){
+            viewHolder.post_image.setVisibility(View.GONE);
+            viewHolder.post_video.setVisibility(View.GONE);
+            /*Glide.with(mContext).load(post.getPostimage())
+                    .apply(new RequestOptions().override(1000 , 1000))
+                    .into(viewHolder.post_image);
+            */
+        }
+        else{
 
             viewHolder.post_image.setVisibility(View.GONE);
             viewHolder.post_video.setVisibility(View.VISIBLE);
@@ -243,7 +249,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
             }
         });
-        viewHolder.publisher.setOnClickListener(new View.OnClickListener() {
+        /*viewHolder.publisher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor=mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
@@ -252,8 +258,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
             }
-        });
-        viewHolder.post_image.setOnClickListener(new View.OnClickListener() {
+        });*/
+        /*viewHolder.post_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences.Editor editor=mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
@@ -262,7 +268,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PostDetailragment()).commit();
             }
-        });
+        });*/
 
         viewHolder.like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -373,6 +379,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                                     }
                                 });
                                 FirebaseDatabase.getInstance().getReference("Posts").child(post.getPostid()).removeValue();
+                                final DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("Rewards").child(firebaseUser.getUid());
+                                reference2.addListenerForSingleValueEvent(new ValueEventListener()  {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        Rewards rewards = dataSnapshot.getValue(Rewards.class);
+                                        int econs = rewards.getEcons();
+
+                                        Rewards rewards1 = new Rewards(econs - 1);
+                                        reference2.setValue(rewards1);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
                                 SharedPreferences.Editor editor=mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
                                 editor.putString("profileid",firebaseUser.getUid());
                                 editor.apply();
@@ -422,7 +444,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             username = itemView.findViewById(R.id.username);
             likes = itemView.findViewById(R.id.likes);
             comments = itemView.findViewById(R.id.comments);
-            publisher = itemView.findViewById(R.id.publisher);
+            //publisher = itemView.findViewById(R.id.publisher);
             description = itemView.findViewById(R.id.description);
             more = itemView.findViewById(R.id.more);
             share = itemView.findViewById(R.id.share);
@@ -438,7 +460,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                comments.setText("View "+dataSnapshot.getChildrenCount()+" Comments");
+                int commentCount = (int) dataSnapshot.getChildrenCount();
+                if(commentCount == 0)
+                    comments.setText("No Comments");
+                else if(commentCount == 1)
+                    comments.setText("View "+commentCount+" Comment");
+                else
+                    comments.setText("View "+commentCount+" Comments");
             }
 
             @Override
@@ -513,7 +541,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                 User user = dataSnapshot.getValue(User.class);
                 Glide.with(mContext).load(user.getImageurl()).into(image_profile);
                 username.setText(user.getUsername());
-                publisher.setText(user.getUsername());
+                //publisher.setText(user.getUsername());
             }
 
             @Override

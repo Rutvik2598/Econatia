@@ -12,13 +12,13 @@
         android:layout_above="@id/bottom"
         android:id="@+id/fragment_container"/>
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:id="@+id/bottom"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.BottomNavigationView
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/bottom_nav"
@@ -27,8 +27,8 @@
             android:background="?android:attr/windowBackground"
             app:menu="@menu/botton_navigation">
 
-        </android.support.design.widget.BottomNavigationView>
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
 </RelativeLayout>
